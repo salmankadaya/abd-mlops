@@ -3,8 +3,8 @@
 #spark.conf.set("fs.azure.account.key.mbusasa.blob.core.windows.net", "<KEY>")
 
 # Read data from container
-final_data = spark.read.format("csv").option("header", "true").load("wasbs://abd-mlops@mbusasa.blob.core.windows.net/datafile/diabetes.csv")
-display(final_data)
+#final_data = spark.read.format("csv").option("header", "true").load("wasbs://abd-mlops@mbusasa.blob.core.windows.net/datafile/diabetes.csv")
+#display(final_data)
 
 # COMMAND ----------
 
@@ -89,14 +89,14 @@ run_metrics
 import matplotlib.pyplot as plt
 from sklearn import metrics
 metrics.plot_roc_curve(lr, X_train, y_train) 
-plt.savefig('roc_auc_curve.png')
+plt.savefig('/tmp/roc_auc_curve.png')
 
 # COMMAND ----------
 
 import matplotlib.pyplot as plt
 from sklearn.metrics import plot_confusion_matrix
 plot_confusion_matrix(lr, X_test, y_test)
-plt.savefig('confusion_matrix.png')
+plt.savefig('/tmp/confusion_matrix.png')
 
 # COMMAND ----------
 
@@ -112,8 +112,8 @@ from mlflow.models.signature import infer_signature
 
 experiment_name="/Users/salman.kadaya@nagarro.com/diabetes"
 run_name="diabetes_run"
-confusion_matrix_path="confusion_matrix.png"
-roc_auc_plot_path="roc_auc_curve.png"
+confusion_matrix_path="/tmp/confusion_matrix.png"
+roc_auc_plot_path="/tmp/roc_auc_curve.png"
 model="lr"
 mlflow.set_experiment(experiment_name)
 with mlflow.start_run(run_name=run_name) as run:
@@ -196,11 +196,8 @@ with open(
 
 # COMMAND ----------
 
-model_name = "diabetes-finder"
-model_version = 1
-
 model = mlflow.sklearn.load_model(
-    model_uri=f"models:/{model_name}/{model_version}"
+    model_uri=f"models:/{name}/{model_version}"
 )
 
 y_pred = lr.predict(X_test)
