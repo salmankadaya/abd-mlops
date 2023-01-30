@@ -189,10 +189,13 @@ file_to_store = {
 
 path_to_store = "/dbfs/FileStore/shared_uploads/salman.kadaya@nagarro.com/"
 
-with open(
-    path_to_store + "mlflow_info.json", "wb"
-) as f:
+with open(path_to_store + "mlflow_info.json", "wb") as f:
     pickle.dump(file_to_store, f)
+
+with open(path_to_store + "mlflow_info.json", "rb") as f:
+    file_to_store = pickle.load(f)
+
+print(file_to_store)
 
 # COMMAND ----------
 
