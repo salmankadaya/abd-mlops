@@ -244,14 +244,20 @@ registered_model = client.get_registered_model("iris-classifier")
 
 # Get the latest version of the registered model
 model_info = client.get_latest_versions(registered_model.name, stages=["Staging"])
-print(model_info)
 model_version = model_info[0].version
 print(model_version)
+stage="Production"
+cur_date = datetime.today().date()
+description = (
+    f"The model version {model_version} was transitioned to {stage} on {cur_date}"
+)
 
 client.transition_model_version_stage(
-    name="iris-classifier",
-    version=model_version ,
-    stage="Production"
+    name=registered_model.name, version=model_version , stage=stage
+)
+
+client.update_model_version(
+    name=registered_model.name, version=model_version, description=description
 )
 
 # COMMAND ----------
