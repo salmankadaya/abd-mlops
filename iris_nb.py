@@ -133,7 +133,7 @@ def create_experiment(experiment_name,run_name, run_metrics,model, confusion_mat
 # COMMAND ----------
 
 from datetime import datetime
-experiment_name = "/Users/salman.kadaya@nagarro.com/iris_classifier_"+ str(datetime.now().strftime("%d-%m-%y")) ##basic classifier
+experiment_name = "/Users/skadya@cchs.com/iris_classifier_"+ str(datetime.now().strftime("%d-%m-%y")) ##basic classifier
 run_name="iris_classifier_"+str(datetime.now().strftime("%d-%m-%y"))
 name="iris-classifier"
 create_experiment(experiment_name,run_name,run_metrics,model,'/tmp/confusion_matrix.png')
@@ -196,13 +196,13 @@ file_to_store = {
     "model_version": model_version,
 }
 
-path_to_store = "/dbfs/FileStore/shared_uploads/salman.kadaya@nagarro.com/"
+path_to_store = "/dbfs/FileStore/shared_uploads/skadya@cchs.com/"
 
 with open(path_to_store + "mlflow_info.json", "wb") as f:
     pickle.dump(file_to_store, f)
 
-with open(path_to_store + "mlflow_info.json", "rb") as f:
-    file_to_store = pickle.load(f)
+#with open(path_to_store + "mlflow_info.json", "rb") as f:
+#    file_to_store = pickle.load(f)
 
 print(file_to_store)
 
