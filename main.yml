@@ -13,9 +13,9 @@ schedules:
   always: 'true'
 
 jobs:
-- template: daily.yaml
+- template: daily.yml
   parameters:
     state: MH
-- template: daily.yaml
+- template: daily.yml
   parameters:
     state: DL
