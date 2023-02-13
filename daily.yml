@@ -1,0 +1,61 @@
+
+parameters:
+- name: state
+  type: string
+  default: ''
+
+jobs:
+- job: daily_run_${{ parameters.state }}
+  variables:
+    CLUSTERID: 'bar'
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+    #- task: configuredatabricks@0
+    #  displayName: '------- Configure Databricks CLI'
+    #  inputs:
+    #    url: 'https://eastus2.azuredatabricks.net/?o=6192355565634015#' #DEV ADB
+    #    token: $(pid7bb5-adbdevtoken)
+    - task: AzureKeyVault@2
+      displayName: 'Azure Key Vault: adb-kv-dev-mlops'
+      inputs:
+        azureSubscription: 'az-kv'
+        KeyVaultName: 'adb-kv-dev-mlops'
+        SecretsFilter: 'adb-token'
+    
+    - task: riserrad.azdo-databricks.azdo-databricks-configuredatabricks.configuredatabricks@0
+      displayName: 'Configure Databricks CLI'
+      inputs:
+        url: 'https://adb-1153212751287930.10.azuredatabricks.net/?o=1153212751287930'
+        token: '$(adb-token)'
+    
+    - task: riserrad.azdo-databricks.azdo-databricks-startcluster.startcluster@0
+      displayName: 'Starting Cluster'
+      inputs:
+        clusterid: '0207-122731-nbb2rm49'
+    
+    - powershell: 'tree "$(System.DefaultWorkingDirectory)"'
+      displayName: 'Treeview PowerShell Script'
+    
+    - task: riserrad.azdo-databricks.azdo-databricks-deploynotebooks.deploynotebooks@0
+      displayName: 'Deploy Notebooks to Workspace'
+      inputs:
+        notebooksFolderPath: .
+    
+    - task: riserrad.azdo-databricks.azdo-databricks-executenotebook.executenotebook@0
+      displayName: 'Execute Notebook'
+      inputs:
+        notebookPath: /Shared/iris_nb_${{ parameters.state }}
+        existingClusterId: '0207-122731-nbb2rm49'
+    
+    - task: riserrad.azdo-databricks.azdo-databricks-waitexecution.waitexecution@0
+      displayName: 'Wait for Notebook execution'
+    
+    - powershell: databricks fs cp dbfs:/FileStore/shared_uploads/skadya@cchs.com/mlflow_info_${{ parameters.state }}.json . --profile AZDO
+      displayName: 'Download artifact'
+    
+    - powershell: 'tree "$(System.DefaultWorkingDirectory)"'
+      displayName: 'Treeview PowerShell Script'
+    
+    - powershell: cat $(System.DefaultWorkingDirectory)/mlflow_info_${{ parameters.state }}.json
+      displayName: 'Check Contain of File        
