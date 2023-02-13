@@ -58,4 +58,4 @@ jobs:
       displayName: 'Treeview PowerShell Script'
     
     - powershell: cat $(System.DefaultWorkingDirectory)/mlflow_info_${{ parameters.state }}.json
-      displayName: 'Check Contain of File        
+      displayName: 'Check Contain of File'
