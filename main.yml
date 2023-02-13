@@ -9,7 +9,7 @@ schedules:
   displayName: 'every day at 10:30 ET'
   branches:
     include:
-      - main
+      - dev
   always: 'true'
 
 jobs:
