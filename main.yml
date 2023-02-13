@@ -1,0 +1,21 @@
+# no PR triggers
+pr: none
+# no CI triggers
+trigger: none
+
+# schedule to run on every day at 10:30 ET
+schedules:
+- cron: '30 14 * * *' #EDT + 4 because of timezone in Azure DevOps
+  displayName: 'every day at 10:30 ET'
+  branches:
+    include:
+      - main
+  always: 'true'
+
+jobs:
+- template: daily.yaml
+  parameters:
+    state: MH
+- template: daily.yaml
+  parameters:
+    state: DL
