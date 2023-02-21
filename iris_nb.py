@@ -61,7 +61,7 @@ def create_confusion_matrix_plot(clf, X_test, y_test):
 
 # COMMAND ----------
 
-url = 'https://raw.githubusercontent.com/TripathiAshutosh/dataset/main/iris.csv'
+url = 'https://raw.githubusercontent.com/salmankadaya/abd-mlops/master/iris.csv'
 data = load_data(url)
 data.head()
 
