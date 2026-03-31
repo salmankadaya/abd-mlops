@@ -3,7 +3,7 @@ name: Databricks CLI via Key Vault
 on:
   push:
     branches:
-      - main   # change if needed
+      - master   # change if needed
 
 permissions:
   id-token: write
